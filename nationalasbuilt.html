@@ -1,0 +1,1410 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>National As Built Inc. — Nationwide As-Built Surveys & Laser Scanning</title>
+<meta name="description" content="Laser-measured as-built drawings, Scan-to-CAD, and Matterport 3D surveys across all 50 states, Puerto Rico, and Canada. Founded 2004. Call 972-342-7070.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ── DESIGN TOKENS ── */
+:root {
+  --navy:    #0d1f3c;
+  --navy2:   #1a3060;
+  --blue:    #1e4d9b;
+  --blue2:   #2563c4;
+  --blue3:   #3b7de8;
+  --steel:   #4a6585;
+  --silver:  #8ea3bc;
+  --silver2: #c5d0df;
+  --silver3: #e8edf3;
+  --bg:      #f4f6f9;
+  --white:   #ffffff;
+  --border:  #d4dce8;
+  --text:    #0d1f3c;
+  --text2:   #374263;
+  --text3:   #6b7e96;
+  --serif:   'Playfair Display', Georgia, serif;
+  --sans:    'Outfit', system-ui, sans-serif;
+  --r:       5px;
+  --r2:      10px;
+  --shadow:  0 4px 24px rgba(13,31,60,0.10);
+  --shadow2: 0 12px 48px rgba(13,31,60,0.16);
+}
+
+/* ── RESET ── */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;font-size:16px}
+body{font-family:var(--sans);color:var(--text);background:var(--white);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+img{display:block;max-width:100%}
+button{font-family:var(--sans);cursor:pointer}
+input,select,textarea{font-family:var(--sans)}
+
+/* ── LAYOUT ── */
+.wrap{max-width:1160px;margin:0 auto;padding:0 28px}
+.wrap-sm{max-width:860px;margin:0 auto;padding:0 28px}
+
+/* ── TYPE ── */
+h1,h2,h3,h4{font-family:var(--serif);font-weight:400;line-height:1.15;letter-spacing:-0.015em}
+.eyebrow{font-family:var(--sans);font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--blue2);display:block;margin-bottom:10px}
+
+/* ── BUTTONS ── */
+.btn{display:inline-flex;align-items:center;gap:8px;font-family:var(--sans);font-size:14px;font-weight:600;padding:11px 22px;border-radius:var(--r);border:none;cursor:pointer;transition:all .18s ease;white-space:nowrap;text-decoration:none;line-height:1}
+.btn-navy{background:var(--navy);color:var(--white)}
+.btn-navy:hover{background:var(--navy2);transform:translateY(-1px);box-shadow:0 6px 20px rgba(13,31,60,.25)}
+.btn-blue{background:var(--blue2);color:var(--white)}
+.btn-blue:hover{background:var(--blue3);transform:translateY(-1px);box-shadow:0 6px 20px rgba(37,99,196,.3)}
+.btn-outline{background:transparent;color:var(--navy);border:1.5px solid var(--border)}
+.btn-outline:hover{border-color:var(--blue);color:var(--blue)}
+.btn-ghost-white{background:transparent;color:var(--white);border:1.5px solid rgba(255,255,255,.35)}
+.btn-ghost-white:hover{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.65)}
+.btn-lg{font-size:16px;padding:14px 28px}
+.btn-sm{font-size:13px;padding:8px 16px}
+
+/* ── ANNOUNCE BAR ── */
+#announce{background:var(--navy);color:rgba(255,255,255,.72);font-size:13px;text-align:center;padding:9px 24px;letter-spacing:.01em}
+#announce a{color:var(--blue3);font-weight:600}
+
+/* ── HEADER ── */
+#header{position:sticky;top:0;z-index:200;background:rgba(255,255,255,.97);backdrop-filter:blur(14px);border-bottom:1px solid var(--border)}
+.header-inner{display:flex;align-items:center;justify-content:space-between;height:72px;gap:20px}
+
+/* Logo */
+.logo{display:flex;align-items:center;gap:11px;flex-shrink:0}
+.logo-mark{width:44px;height:44px;background:var(--navy);border-radius:var(--r);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.logo-text-top{font-family:var(--serif);font-size:15px;font-weight:600;color:var(--navy);line-height:1.1;letter-spacing:-.01em}
+.logo-text-bot{font-size:10.5px;font-weight:500;color:var(--text3);letter-spacing:.04em;margin-top:1px}
+
+/* Nav */
+.nav{display:flex;align-items:center;gap:28px}
+.nav a{font-size:14px;font-weight:500;color:var(--text2);transition:color .15s}
+.nav a:hover{color:var(--navy)}
+
+/* Cities dropdown */
+.dd-wrap{position:relative}
+.dd-btn{background:none;border:none;font-size:14px;font-weight:500;color:var(--text2);cursor:pointer;display:flex;align-items:center;gap:5px;padding:4px 0;transition:color .15s}
+.dd-btn:hover{color:var(--navy)}
+.dd-btn svg{transition:transform .2s}
+.dd-wrap:hover .dd-btn svg{transform:rotate(180deg)}
+.dd-menu{position:absolute;top:calc(100% + 10px);left:50%;transform:translateX(-50%);background:var(--white);border:1px solid var(--border);border-radius:var(--r2);box-shadow:var(--shadow2);padding:8px 0;min-width:230px;opacity:0;visibility:hidden;transition:all .18s ease;z-index:300}
+.dd-wrap:hover .dd-menu{opacity:1;visibility:visible;top:calc(100% + 6px)}
+.dd-menu a{display:block;padding:10px 20px;font-size:14px;color:var(--text2);transition:background .1s}
+.dd-menu a:hover{background:var(--bg)}
+
+/* Header CTAs */
+.h-ctas{display:flex;align-items:center;gap:10px;flex-shrink:0}
+
+/* Mobile burger */
+.burger{display:none;background:none;border:none;padding:4px}
+
+/* Mobile nav */
+#mobile-nav{display:none;border-top:1px solid var(--border);background:var(--white)}
+#mobile-nav.open{display:block}
+.mob-link{display:block;padding:13px 28px;font-size:15px;font-weight:500;color:var(--text);border-bottom:1px solid var(--border)}
+.mob-cities{padding:16px 28px 8px;font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--text3)}
+.mob-city-grid{display:grid;grid-template-columns:1fr 1fr;padding:0 28px 16px;gap:4px}
+.mob-city-grid a{font-size:14px;color:var(--text2);padding:5px 0}
+.mob-btns{padding:16px 28px 24px;display:flex;flex-direction:column;gap:10px}
+
+/* ── HERO ── */
+#hero{background:linear-gradient(140deg,var(--navy) 0%,#162d58 48%,var(--blue) 100%);color:var(--white);padding:96px 0 80px;position:relative;overflow:hidden}
+#hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 55% 65% at 80% 35%,rgba(37,99,196,.28) 0%,transparent 70%);pointer-events:none}
+#hero::after{content:'';position:absolute;top:0;right:26%;width:1.5px;height:100%;background:linear-gradient(180deg,transparent,rgba(197,208,223,.13),transparent);transform:rotate(14deg);transform-origin:top;pointer-events:none}
+.hero-grid{display:grid;grid-template-columns:1fr 420px;gap:64px;align-items:center;position:relative}
+.hero-pill{display:inline-flex;align-items:center;gap:9px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.14);color:rgba(197,208,223,.9);font-size:11.5px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;padding:7px 16px;border-radius:100px;margin-bottom:28px}
+.hero-pill span{width:7px;height:7px;border-radius:50%;background:var(--blue3);flex-shrink:0}
+.hero-h1{font-family:var(--serif);font-size:clamp(38px,4.5vw,58px);font-weight:600;line-height:1.08;letter-spacing:-.025em;color:var(--white);margin-bottom:22px}
+.hero-h1 em{font-style:italic;font-weight:400;color:var(--silver2)}
+.hero-sub{font-size:18px;line-height:1.7;color:rgba(255,255,255,.64);max-width:540px;margin-bottom:38px}
+.hero-btns{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:56px}
+.hero-stats{display:flex;gap:40px;flex-wrap:wrap}
+.hstat-num{font-family:var(--serif);font-size:30px;color:var(--silver2);line-height:1}
+.hstat-label{font-size:12px;color:rgba(255,255,255,.4);margin-top:3px}
+
+/* Hero card */
+.hero-card{background:var(--white);border-radius:var(--r2);padding:32px;box-shadow:0 28px 80px rgba(0,0,0,.28);color:var(--text)}
+.hcard-title{font-family:var(--serif);font-size:21px;color:var(--navy);margin-bottom:4px}
+.hcard-sub{font-size:13px;color:var(--text3);margin-bottom:24px}
+
+/* ── FORM ELEMENTS ── */
+.fg{display:flex;flex-direction:column;gap:5px;margin-bottom:13px}
+.fg label{font-size:12px;font-weight:600;color:var(--text2);letter-spacing:.04em}
+.fg input,.fg select,.fg textarea{font-family:var(--sans);font-size:14px;color:var(--text);background:var(--bg);border:1.5px solid var(--border);border-radius:var(--r);padding:10px 12px;width:100%;outline:none;transition:border-color .15s,background .15s;-webkit-appearance:none;appearance:none}
+.fg input:focus,.fg select:focus,.fg textarea:focus{border-color:var(--blue);background:var(--white)}
+.fg input::placeholder,.fg textarea::placeholder{color:var(--text3)}
+.fg select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%236b7e96' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;padding-right:36px}
+.fg-row{display:grid;grid-template-columns:1fr 1fr;gap:13px}
+.fg-row .fg{margin-bottom:0}
+.form-submit{width:100%;background:var(--navy);color:var(--white);font-family:var(--sans);font-size:15px;font-weight:700;padding:14px;border:none;border-radius:var(--r);cursor:pointer;transition:background .15s,transform .15s;margin-top:6px;letter-spacing:.01em}
+.form-submit:hover{background:var(--blue);transform:translateY(-1px)}
+.form-submit:disabled{opacity:.65;cursor:not-allowed;transform:none}
+.form-note{text-align:center;font-size:12px;color:var(--text3);margin-top:11px}
+.form-note a{color:var(--blue2);font-weight:600}
+.form-success{background:#f0f7ff;border:1.5px solid var(--blue);border-radius:var(--r2);padding:36px;text-align:center;display:none}
+.form-success.show{display:block}
+.form-error{background:#fff0f0;border:1px solid #fca5a5;border-radius:var(--r);padding:12px 16px;font-size:14px;color:#991b1b;margin-bottom:14px;display:none}
+.form-error.show{display:block}
+
+/* ── TRUST BAR ── */
+#trust{background:var(--bg);border-bottom:1px solid var(--border);padding:17px 0}
+.trust-items{display:flex;align-items:center;justify-content:center;gap:44px;flex-wrap:wrap}
+.trust-item{display:flex;align-items:center;gap:9px;font-size:13px;font-weight:500;color:var(--text2)}
+.trust-item svg{color:var(--blue);flex-shrink:0}
+
+/* ── SECTIONS ── */
+.section{padding:96px 0}
+.section-bg{background:var(--bg)}
+.section-navy{background:var(--navy)}
+.section-sm{padding:72px 0}
+
+/* Section headers */
+.sh{margin-bottom:52px}
+.sh-c{text-align:center;margin-bottom:52px}
+.sh h2,.sh-c h2{font-family:var(--serif);font-size:clamp(28px,3.2vw,44px);color:var(--navy);margin-bottom:14px}
+.sh h2 em,.sh-c h2 em{font-style:italic;color:var(--blue)}
+.sh p,.sh-c p{font-size:17px;color:var(--text2);line-height:1.7;max-width:580px}
+.sh-c p{margin:0 auto}
+.section-navy .sh h2,.section-navy .sh-c h2{color:var(--white)}
+.section-navy .sh h2 em,.section-navy .sh-c h2 em{color:var(--silver2)}
+.section-navy .sh p,.section-navy .sh-c p,.section-navy .eyebrow{color:rgba(255,255,255,.55)}
+.section-navy .eyebrow{color:var(--blue3)}
+
+/* ── SERVICES GRID ── */
+.services-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;background:var(--border);border:1px solid var(--border);border-radius:var(--r2);overflow:hidden}
+.svc-card{background:var(--white);padding:32px 28px;transition:background .15s}
+.svc-card:hover{background:var(--silver3)}
+.svc-num{font-family:var(--serif);font-size:13px;color:var(--silver);margin-bottom:14px;letter-spacing:.04em}
+.svc-icon{width:38px;height:38px;color:var(--blue);margin-bottom:16px}
+.svc-card h3{font-family:var(--serif);font-size:19px;color:var(--navy);margin-bottom:10px;line-height:1.25}
+.svc-card p{font-size:14px;line-height:1.7;color:var(--text2)}
+.svc-link{display:inline-flex;align-items:center;gap:6px;margin-top:15px;font-size:13px;font-weight:600;color:var(--blue2);transition:gap .15s}
+.svc-link:hover{gap:10px}
+
+/* ── PROCESS ── */
+.process-grid{display:grid;grid-template-columns:repeat(3,1fr);position:relative}
+.process-line{position:absolute;top:33px;left:16.67%;right:16.67%;height:1px;background:var(--border)}
+.pstep{text-align:center;padding:0 28px}
+.pstep-num{width:68px;height:68px;border-radius:50%;background:var(--navy);color:var(--white);display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-size:24px;margin:0 auto 22px;position:relative;z-index:1}
+.pstep h3{font-family:var(--serif);font-size:20px;color:var(--navy);margin-bottom:11px}
+.pstep p{font-size:14px;line-height:1.7;color:var(--text2)}
+
+/* ── WHY US ── */
+.why-grid{display:grid;grid-template-columns:1fr 1fr;gap:72px;align-items:center}
+.why-list{display:flex;flex-direction:column}
+.why-item{display:grid;grid-template-columns:44px 1fr;gap:18px;padding:22px 0;border-bottom:1px solid rgba(255,255,255,.07)}
+.why-item:last-child{border-bottom:none}
+.why-n{font-family:var(--serif);font-size:26px;color:var(--silver);opacity:.4;line-height:1}
+.why-item h3{font-size:15px;font-weight:600;color:var(--white);margin-bottom:5px}
+.why-item p{font-size:14px;color:rgba(255,255,255,.48);line-height:1.65}
+.why-panel{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.09);border-radius:var(--r2);padding:40px}
+.why-quote{font-family:var(--serif);font-size:23px;color:var(--white);line-height:1.4;margin-bottom:32px}
+.why-quote em{color:var(--silver2)}
+.why-stats{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:28px}
+.wstat{background:rgba(30,77,155,.22);border:1px solid rgba(37,99,196,.28);border-radius:var(--r);padding:16px 18px}
+.wstat-n{font-family:var(--serif);font-size:28px;color:var(--silver2);line-height:1}
+.wstat-l{font-size:11px;color:rgba(255,255,255,.38);margin-top:3px}
+.why-cta-block{background:var(--blue);border-radius:var(--r);padding:18px 22px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.why-cta-block .label-s{font-size:12px;color:rgba(255,255,255,.6);font-weight:600;margin-bottom:2px}
+.why-cta-block .phone{font-family:var(--serif);font-size:20px;color:var(--white)}
+.why-cta-btn{background:var(--white);color:var(--navy);font-size:13px;font-weight:700;padding:10px 18px;border-radius:var(--r);text-decoration:none;flex-shrink:0;transition:background .15s}
+.why-cta-btn:hover{background:var(--silver3)}
+
+/* ── TESTIMONIALS ── */
+.testi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+.testi-card{background:var(--white);border:1px solid var(--border);border-radius:var(--r2);padding:28px;position:relative}
+.testi-card::before{content:'\201C';font-family:var(--serif);font-size:80px;color:var(--blue);opacity:.1;position:absolute;top:6px;left:18px;line-height:1}
+.testi-text{font-size:15px;line-height:1.72;color:var(--text2);margin-bottom:20px;position:relative}
+.testi-author{display:flex;align-items:center;gap:12px}
+.testi-avatar{width:40px;height:40px;border-radius:50%;background:var(--navy);display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-size:14px;color:var(--silver2);flex-shrink:0}
+.testi-name{font-size:14px;font-weight:600;color:var(--navy)}
+.testi-role{font-size:12px;color:var(--text3)}
+
+/* ── PRICING ── */
+.price-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+.price-card{border:1.5px solid var(--border);border-radius:var(--r2);padding:32px;position:relative;background:var(--white);transition:border-color .15s,transform .15s}
+.price-card:hover{border-color:var(--silver);transform:translateY(-2px)}
+.price-card.featured{border:2px solid var(--blue);background:var(--navy)}
+.price-badge{position:absolute;top:-1px;left:50%;transform:translateX(-50%);background:var(--blue2);color:var(--white);font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:4px 16px;border-radius:0 0 7px 7px}
+.price-tier{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--blue2);margin-bottom:8px}
+.featured .price-tier{color:var(--silver2)}
+.price-amount{font-family:var(--serif);font-size:34px;color:var(--navy);line-height:1}
+.featured .price-amount{color:var(--silver2)}
+.price-unit{font-size:13px;color:var(--text3);margin-bottom:14px;margin-top:2px}
+.featured .price-unit{color:rgba(255,255,255,.4)}
+.price-desc{font-size:14px;color:var(--text2);margin-bottom:20px;padding-bottom:20px;border-bottom:1px solid var(--border)}
+.featured .price-desc{color:rgba(255,255,255,.55);border-color:rgba(255,255,255,.1)}
+.price-features{list-style:none;display:flex;flex-direction:column;gap:10px;margin-bottom:26px}
+.price-features li{display:flex;align-items:flex-start;gap:10px;font-size:14px;color:var(--text2)}
+.featured .price-features li{color:rgba(255,255,255,.7)}
+.price-features li::before{content:'';width:16px;height:16px;border-radius:50%;background:var(--silver3);border:1.5px solid var(--blue);flex-shrink:0;margin-top:2px;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M3.5 8l3 3 6-6' stroke='%232563c4' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:center}
+.featured .price-features li::before{background-color:rgba(37,99,196,.2);border-color:rgba(197,208,223,.4);background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M3.5 8l3 3 6-6' stroke='%23c5d0df' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3C/svg%3E")}
+.price-cta{display:block;text-align:center;padding:12px;border-radius:var(--r);font-family:var(--sans);font-weight:700;font-size:14px;text-decoration:none;transition:all .15s;border:1.5px solid var(--navy);color:var(--navy)}
+.price-cta:hover{background:var(--navy);color:var(--white)}
+.featured .price-cta{background:var(--blue2);border-color:var(--blue2);color:var(--white)}
+.featured .price-cta:hover{background:var(--blue3);border-color:var(--blue3)}
+
+/* ── CALCULATOR ── */
+.calc-wrap{background:var(--white);border:1px solid var(--border);border-radius:var(--r2);overflow:hidden}
+.calc-head{background:var(--navy);padding:24px 32px}
+.calc-head h3{font-family:var(--serif);font-size:22px;color:var(--white);margin-bottom:3px}
+.calc-head p{font-size:14px;color:rgba(255,255,255,.5)}
+.calc-body{padding:32px}
+.calc-controls{display:grid;grid-template-columns:1fr 1fr 1fr;gap:28px;margin-bottom:28px}
+.ctrl-label{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--text3);margin-bottom:8px}
+.ctrl-val{font-family:var(--serif);font-size:28px;color:var(--navy);margin-top:8px;line-height:1}
+input[type=range]{width:100%;-webkit-appearance:none;appearance:none;height:4px;background:var(--border);border-radius:2px;outline:none;cursor:pointer}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:20px;height:20px;border-radius:50%;background:var(--navy);border:3px solid var(--white);box-shadow:0 0 0 2px var(--navy);cursor:pointer}
+.calc-result{background:var(--bg);border:1.5px solid var(--border);border-radius:var(--r);padding:20px 24px;display:grid;grid-template-columns:1fr 1fr auto;gap:20px;align-items:center}
+.cr-label{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--blue2);margin-bottom:4px}
+.cr-val{font-family:var(--serif);font-size:32px;color:var(--navy)}
+.calc-note{font-size:12px;color:var(--text3);margin-top:12px}
+
+/* ── COVERAGE ── */
+.coverage-grid{display:grid;grid-template-columns:1fr 1fr;gap:72px;align-items:start}
+.cov-tags{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:32px}
+.cov-tag{background:var(--bg);border:1px solid var(--border);border-radius:100px;font-size:12px;font-weight:600;color:var(--text2);padding:5px 14px}
+.cov-btns{display:flex;flex-direction:column;gap:11px;align-items:flex-start}
+.cities-label{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--text3);margin-bottom:14px}
+.cities-grid-list{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.city-link{display:flex;align-items:center;justify-content:space-between;padding:13px 16px;background:var(--white);border:1px solid var(--border);border-radius:var(--r);text-decoration:none;transition:border-color .15s,transform .15s}
+.city-link:hover{border-color:var(--blue);transform:translateX(2px)}
+.city-link-name{font-size:14px;font-weight:600;color:var(--navy)}
+.city-link-metro{font-size:11px;color:var(--text3)}
+
+/* ── FAQ ── */
+.faq-list{max-width:760px;margin:0 auto}
+details{border-bottom:1px solid var(--border)}
+details summary{padding:22px 0;cursor:pointer;font-size:16px;font-weight:600;color:var(--navy);list-style:none;display:flex;align-items:center;justify-content:space-between;gap:16px;user-select:none}
+details summary::-webkit-details-marker{display:none}
+details summary svg{flex-shrink:0;color:var(--text3);transition:transform .2s}
+details[open] summary svg{transform:rotate(180deg)}
+.faq-body{padding-bottom:22px;font-size:15px;line-height:1.72;color:var(--text2)}
+
+/* ── QUOTE SECTION ── */
+.quote-grid{display:grid;grid-template-columns:1fr 360px;gap:48px;align-items:start}
+.quote-form-wrap{background:var(--white);border-radius:var(--r2);padding:36px}
+.quote-sidebar{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.09);border-radius:var(--r2);padding:32px;color:var(--white)}
+.qs-title{font-family:var(--serif);font-size:20px;margin-bottom:22px}
+.qs-steps{display:flex;flex-direction:column;gap:0}
+.qs-step{display:grid;grid-template-columns:28px 1fr;gap:14px;padding:14px 0;border-bottom:1px solid rgba(255,255,255,.07)}
+.qs-step:last-of-type{border-bottom:none}
+.qs-step-n{width:28px;height:28px;border-radius:50%;background:var(--blue);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0}
+.qs-step-t{font-weight:600;font-size:14px;margin-bottom:3px}
+.qs-step-b{font-size:13px;color:rgba(255,255,255,.45);line-height:1.6}
+.qs-contact{border-top:1px solid rgba(255,255,255,.08);padding-top:22px;margin-top:8px}
+.qs-contact-label{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.35);margin-bottom:8px}
+.qs-contact a{display:block;text-decoration:none}
+.qs-contact .phone{font-family:var(--serif);font-size:22px;color:var(--silver2);margin-bottom:4px}
+.qs-contact .email{font-size:13px;color:rgba(255,255,255,.38)}
+
+/* ── CITY PAGES ── */
+.page{display:none}
+.page.active{display:block}
+.city-hero{background:linear-gradient(140deg,var(--navy) 0%,#162d58 48%,var(--blue) 100%);color:var(--white);padding:72px 0 56px;position:relative;overflow:hidden}
+.city-hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 50% 60% at 72% 38%,rgba(37,99,196,.25) 0%,transparent 70%);pointer-events:none}
+.breadcrumb{display:flex;align-items:center;gap:8px;font-size:13px;color:rgba(255,255,255,.4);margin-bottom:24px}
+.breadcrumb a{color:rgba(255,255,255,.4);transition:color .15s}
+.breadcrumb a:hover{color:rgba(255,255,255,.75)}
+.breadcrumb span{color:var(--silver2)}
+.city-hero-grid{display:grid;grid-template-columns:1fr 390px;gap:52px;align-items:center}
+.city-pill{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);color:#c5d0df;font-size:11.5px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;padding:6px 14px;border-radius:100px;margin-bottom:20px}
+.city-h1{font-family:var(--serif);font-size:clamp(28px,3.8vw,48px);font-weight:600;line-height:1.1;letter-spacing:-.02em;margin-bottom:18px}
+.city-sub{font-size:16px;line-height:1.72;color:rgba(255,255,255,.65);max-width:500px;margin-bottom:32px}
+.city-btns{display:flex;flex-wrap:wrap;gap:11px}
+.city-stats-panel{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:var(--r2);padding:28px}
+.csp-label{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.32);margin-bottom:14px}
+.csp-tags{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:24px}
+.csp-tag{background:rgba(30,77,155,.3);border:1px solid rgba(37,99,196,.3);color:rgba(255,255,255,.8);font-size:12.5px;font-weight:500;padding:5px 12px;border-radius:100px}
+.csp-stats{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.csp-stat{background:rgba(255,255,255,.04);border-radius:var(--r);padding:13px 14px}
+.csp-stat-n{font-family:var(--serif);font-size:18px;color:var(--silver2);line-height:1}
+.csp-stat-l{font-size:10.5px;color:rgba(255,255,255,.32);margin-top:2px}
+
+/* Why NAB in city */
+.why-city-grid{display:grid;grid-template-columns:1fr 1fr;gap:48px}
+.why-city-points{display:flex;flex-direction:column;gap:12px}
+.wcp{display:flex;gap:15px;padding:17px 18px;background:var(--bg);border:1px solid var(--border);border-radius:var(--r)}
+.wcp-dot{width:8px;height:8px;border-radius:50%;background:var(--blue);flex-shrink:0;margin-top:6px}
+.wcp-t{font-weight:600;font-size:14px;color:var(--navy);margin-bottom:3px}
+.wcp-b{font-size:14px;color:var(--text2);line-height:1.6}
+
+/* Other cities */
+.other-cities-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:11px}
+
+/* ── FOOTER ── */
+footer{background:#080f1c;color:var(--white);padding:68px 0 28px}
+.footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:48px;margin-bottom:60px}
+.footer-brand p{font-size:14px;line-height:1.7;color:rgba(255,255,255,.38);margin:18px 0 22px;max-width:272px}
+.footer-phone{color:var(--blue3);font-weight:600;font-size:14px;display:block;margin-bottom:6px}
+.footer-email{font-size:13px;color:rgba(255,255,255,.35)}
+.footer-col h4{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.28);margin-bottom:18px}
+.footer-links{list-style:none;display:flex;flex-direction:column;gap:9px}
+.footer-links a{font-size:14px;color:rgba(255,255,255,.48);transition:color .15s}
+.footer-links a:hover{color:rgba(255,255,255,.85)}
+.footer-bottom{display:flex;align-items:center;justify-content:space-between;padding-top:24px;border-top:1px solid rgba(255,255,255,.06);gap:20px;flex-wrap:wrap}
+.footer-bottom p{font-size:13px;color:rgba(255,255,255,.22)}
+.footer-bottom-links{display:flex;gap:22px}
+.footer-bottom-links a{font-size:13px;color:rgba(255,255,255,.22);transition:color .15s}
+.footer-bottom-links a:hover{color:rgba(255,255,255,.55)}
+
+/* Footer logo */
+.f-logo-mark{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08)}
+.f-logo-top{color:var(--white)}
+.f-logo-bot{color:rgba(255,255,255,.3)}
+
+/* ── MOBILE STICKY BAR ── */
+#sticky-bar{display:none;position:fixed;bottom:0;left:0;right:0;background:var(--navy);padding:12px 16px;z-index:300;box-shadow:0 -4px 20px rgba(0,0,0,.2);gap:8px}
+
+/* ── ANIMATIONS ── */
+@keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+.fu{animation:fadeUp .55s ease both}
+.fu1{animation-delay:.08s}.fu2{animation-delay:.16s}.fu3{animation-delay:.24s}.fu4{animation-delay:.32s}
+
+/* ── RESPONSIVE ── */
+@media(max-width:1020px){
+  .hero-grid,.quote-grid,.city-hero-grid{grid-template-columns:1fr!important}
+  .hero-card,.city-stats-panel{max-width:520px}
+}
+@media(max-width:900px){
+  .nav,.h-ctas .btn-outline{display:none}
+  .burger{display:block}
+  .why-grid,.coverage-grid,.why-city-grid{grid-template-columns:1fr!important}
+  .footer-grid{grid-template-columns:1fr 1fr}
+  #sticky-bar{display:flex}
+  body{padding-bottom:60px}
+}
+@media(max-width:700px){
+  .services-grid,.testi-grid,.price-grid,.other-cities-grid{grid-template-columns:1fr!important}
+  .process-grid{grid-template-columns:1fr!important;gap:36px}
+  .process-line{display:none}
+  .pstep{padding:0 12px}
+  .calc-controls{grid-template-columns:1fr!important;gap:20px}
+  .calc-result{grid-template-columns:1fr 1fr;flex-wrap:wrap}
+  .cities-grid-list{grid-template-columns:1fr}
+  .fg-row{grid-template-columns:1fr}
+  .footer-grid{grid-template-columns:1fr}
+}
+@media(max-width:500px){
+  .wrap{padding:0 16px}
+  .section{padding:64px 0}
+}
+</style>
+</head>
+<body>
+
+<!-- ANNOUNCE BAR -->
+<div id="announce">
+  Serving all 50 states, Puerto Rico &amp; Canada since 2004 &mdash;
+  <a href="tel:9723427070">Call 972-342-7070</a>
+</div>
+
+<!-- HEADER -->
+<header id="header">
+  <div class="wrap">
+    <div class="header-inner">
+
+      <!-- Logo -->
+      <a href="#" onclick="showPage('home')" class="logo" style="text-decoration:none">
+        <div class="logo-mark">
+          <svg width="28" height="28" viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="9" y="10" width="8" height="36" fill="#2563c4"/>
+            <rect x="39" y="10" width="8" height="36" fill="#2563c4"/>
+            <path d="M17 10 L39 46 L35 46 L13 10 Z" fill="#c5d0df"/>
+            <path d="M17 10 L39 10 L39 20 L25 10 Z" fill="#2563c4" opacity=".6"/>
+            <path d="M17 46 L39 46 L39 36 L27 46 Z" fill="#2563c4" opacity=".6"/>
+          </svg>
+        </div>
+        <div>
+          <div class="logo-text-top">NATIONAL AS BUILT</div>
+          <div class="logo-text-bot">INC. &middot; NATIONWIDE SURVEYS</div>
+        </div>
+      </a>
+
+      <!-- Desktop nav -->
+      <nav class="nav">
+        <a href="#services" onclick="showPage('home')">Services</a>
+        <a href="#process" onclick="showPage('home')">How It Works</a>
+        <a href="#pricing" onclick="showPage('home')">Pricing</a>
+        <div class="dd-wrap">
+          <button class="dd-btn">
+            Locations
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="dd-menu" id="dd-cities"></div>
+        </div>
+        <a href="#faq" onclick="showPage('home')">FAQ</a>
+      </nav>
+
+      <!-- CTAs -->
+      <div class="h-ctas">
+        <a href="tel:9723427070" class="btn btn-outline btn-sm">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 10.8a19.79 19.79 0 01-3.07-8.67A2 2 0 012.18 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.91 7.91a16 16 0 006.29 6.29l1.28-1.28a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+          972-342-7070
+        </a>
+        <a href="#quote" class="btn btn-navy btn-sm" onclick="showPage('home')">Get Free Quote</a>
+      </div>
+
+      <!-- Burger -->
+      <button class="burger" onclick="toggleMobile()" aria-label="Menu">
+        <svg id="burger-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- Mobile nav -->
+  <div id="mobile-nav">
+    <a class="mob-link" href="#services" onclick="showPage('home');toggleMobile()">Services</a>
+    <a class="mob-link" href="#process" onclick="showPage('home');toggleMobile()">How It Works</a>
+    <a class="mob-link" href="#pricing" onclick="showPage('home');toggleMobile()">Pricing</a>
+    <a class="mob-link" href="#faq" onclick="showPage('home');toggleMobile()">FAQ</a>
+    <div class="mob-cities">Locations</div>
+    <div class="mob-city-grid" id="mob-city-grid"></div>
+    <div class="mob-btns">
+      <a href="tel:9723427070" class="btn btn-outline" style="justify-content:center">Call 972-342-7070</a>
+      <a href="#quote" class="btn btn-navy" style="justify-content:center" onclick="showPage('home');toggleMobile()">Get Free Quote</a>
+    </div>
+  </div>
+</header>
+
+<!-- ════════════════════════════════════════════ -->
+<!-- HOME PAGE                                    -->
+<!-- ════════════════════════════════════════════ -->
+<div id="page-home" class="page active">
+
+  <!-- HERO -->
+  <section id="hero">
+    <div class="wrap">
+      <div class="hero-grid">
+        <div>
+          <div class="hero-pill fu"><span></span>Trusted since 2004 &mdash; All 50 states + Canada</div>
+          <h1 class="hero-h1 fu fu1">Accurate As-Built<br><em>Surveys, Delivered Fast.</em></h1>
+          <p class="hero-sub fu fu2">Laser-measured commercial and residential drawings, Scan-to-CAD, and Matterport 3D tours. One reliable team. One flat rate. Anywhere.</p>
+          <div class="hero-btns fu fu3">
+            <a href="#quote" class="btn btn-blue btn-lg">
+              Get a Free Quote
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </a>
+            <a href="tel:9723427070" class="btn btn-ghost-white btn-lg">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 10.8a19.79 19.79 0 01-3.07-8.67A2 2 0 012.18 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.91 7.91a16 16 0 006.29 6.29l1.28-1.28a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+              972-342-7070
+            </a>
+          </div>
+          <div class="hero-stats fu fu4">
+            <div><div class="hstat-num">20+</div><div class="hstat-label">Years in business</div></div>
+            <div><div class="hstat-num">50</div><div class="hstat-label">States served</div></div>
+            <div><div class="hstat-num">&#177;1/32&#8243;</div><div class="hstat-label">LEICA accuracy</div></div>
+            <div><div class="hstat-num">48h</div><div class="hstat-label">Avg scheduling</div></div>
+          </div>
+        </div>
+
+        <!-- Mini quote card -->
+        <div class="hero-card fu fu2">
+          <div class="hcard-title">Request a Free Quote</div>
+          <div class="hcard-sub">We respond within 2 business hours</div>
+          <div class="fg-row">
+            <div class="fg"><label>Name</label><input type="text" placeholder="John Smith"></div>
+            <div class="fg"><label>Email</label><input type="email" placeholder="john@co.com"></div>
+          </div>
+          <div class="fg">
+            <label>Project type</label>
+            <select>
+              <option value="">Select a service...</option>
+              <option>Commercial As-Built Survey</option>
+              <option>Residential Survey</option>
+              <option>Scan-to-CAD</option>
+              <option>Matterport 3D Tour</option>
+              <option>Multi-site Rollout</option>
+              <option>ADA Survey</option>
+              <option>Lease Area Verification</option>
+            </select>
+          </div>
+          <div class="fg">
+            <label>Project location</label>
+            <input type="text" placeholder="City, State">
+          </div>
+          <a href="#quote" class="form-submit" style="display:block;text-align:center;text-decoration:none;margin-top:8px">Get My Free Quote &rarr;</a>
+          <p class="form-note">Or call <a href="tel:9723427070">972-342-7070</a></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TRUST BAR -->
+  <div id="trust">
+    <div class="wrap">
+      <div class="trust-items">
+        <div class="trust-item">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          Founded 2004 &mdash; 20+ years nationwide
+        </div>
+        <div class="trust-item">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          All 50 states + PR &amp; Canada
+        </div>
+        <div class="trust-item">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          AIA-standard DWG + PDF
+        </div>
+        <div class="trust-item">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          LEICA &#177;1/32&#8243; precision
+        </div>
+        <div class="trust-item">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          Surveys scheduled within 48h
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SERVICES -->
+  <section class="section" id="services">
+    <div class="wrap">
+      <div class="sh">
+        <span class="eyebrow">What we do</span>
+        <h2>Complete As-Built <em>Documentation Services</em></h2>
+        <p>From a single floor plan to a full multi-discipline survey package, we capture and deliver the field data your project depends on.</p>
+      </div>
+      <div class="services-grid">
+        <div class="svc-card">
+          <div class="svc-num">01</div>
+          <svg class="svc-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+          <h3>Architectural As-Built Surveys</h3>
+          <p>Laser-measured floor plans, reflected ceiling plans, elevations, sections, and site plans aligned to AIA guidelines. Delivered in DWG and PDF.</p>
+          <a href="#quote" class="svc-link">Get a quote <span>&#8594;</span></a>
+        </div>
+        <div class="svc-card">
+          <div class="svc-num">02</div>
+          <svg class="svc-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+          <h3>Scan-to-CAD</h3>
+          <p>We convert LEICA laser measurements into clean AutoCAD DWG files ready for design, coordination, or permit submission on any project type.</p>
+          <a href="#quote" class="svc-link">Get a quote <span>&#8594;</span></a>
+        </div>
+        <div class="svc-card">
+          <div class="svc-num">03</div>
+          <svg class="svc-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
+          <h3>3D Virtual Tours</h3>
+          <p>Dollhouse views, floor plan overlays, and immersive Matterport walkthroughs so architects, engineers, and contractors visit the site remotely.</p>
+          <a href="#quote" class="svc-link">Get a quote <span>&#8594;</span></a>
+        </div>
+        <div class="svc-card">
+          <div class="svc-num">04</div>
+          <svg class="svc-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+          <h3>Structural, Roof &amp; Equipment</h3>
+          <p>Discipline-specific surveys documenting structural systems, roof conditions, and equipment layouts for renovation planning and MEP coordination.</p>
+          <a href="#quote" class="svc-link">Get a quote <span>&#8594;</span></a>
+        </div>
+        <div class="svc-card">
+          <div class="svc-num">05</div>
+          <svg class="svc-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+          <h3>ADA Surveys</h3>
+          <p>Detailed documentation of accessible routes, clearances, and facilities for ADA compliance reviews, retrofits, and barrier removal projects.</p>
+          <a href="#quote" class="svc-link">Get a quote <span>&#8594;</span></a>
+        </div>
+        <div class="svc-card">
+          <div class="svc-num">06</div>
+          <svg class="svc-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
+          <h3>Lease Area &amp; Permits</h3>
+          <p>Precise square footage calculations for leasing negotiations, BOMA compliance, and building permit applications across all commercial project types.</p>
+          <a href="#quote" class="svc-link">Get a quote <span>&#8594;</span></a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROCESS -->
+  <section class="section section-bg" id="process">
+    <div class="wrap">
+      <div class="sh-c">
+        <span class="eyebrow">How it works</span>
+        <h2>From Site to CAD in <em>3 Steps</em></h2>
+      </div>
+      <div class="process-grid">
+        <div class="process-line"></div>
+        <div class="pstep">
+          <div class="pstep-num">01</div>
+          <h3>Request a Quote</h3>
+          <p>Tell us your project type, square footage, and location. We respond within 2 business hours and schedule your survey within 48 hours.</p>
+        </div>
+        <div class="pstep">
+          <div class="pstep-num">02</div>
+          <h3>On-Site Survey</h3>
+          <p>Our field specialists capture all existing conditions using LEICA laser measurement technology, achieving &#177;1/32&#8243; accuracy over 300 feet.</p>
+        </div>
+        <div class="pstep">
+          <div class="pstep-num">03</div>
+          <h3>Receive Your Drawings</h3>
+          <p>Clean AutoCAD DWG and PDF files delivered via Dropbox, aligned to AIA standards and ready for design, permitting, or construction.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHY US -->
+  <section class="section section-navy">
+    <div class="wrap">
+      <div class="why-grid">
+        <div>
+          <span class="eyebrow" style="color:var(--blue3)">Why choose us</span>
+          <h2 style="color:var(--white);margin-top:10px;margin-bottom:18px">Accuracy Is Our <em>First Priority</em></h2>
+          <p style="font-size:16px;color:rgba(255,255,255,.5);line-height:1.7;margin-bottom:36px">Since 2004, we&#8217;ve built our reputation on one thing: getting the measurements right every single time.</p>
+          <div class="why-list">
+            <div class="why-item"><div class="why-n">01</div><div><h3>LEICA Laser Precision</h3><p>Professional LEICA devices achieving &#177;1/32&#8243; over 300 ft &mdash; far beyond tape-measure tolerances that cause expensive errors downstream.</p></div></div>
+            <div class="why-item"><div class="why-n">02</div><div><h3>One Flat Rate, Anywhere</h3><p>Whether your project is in Manhattan or rural Montana, same competitive rate. No travel surcharges. No surprise fees.</p></div></div>
+            <div class="why-item"><div class="why-n">03</div><div><h3>AIA-Standard Deliverables</h3><p>Every drawing per AIA guidelines &mdash; floor plans, RCPs, elevations, sections, and site plans in DWG and PDF.</p></div></div>
+            <div class="why-item"><div class="why-n">04</div><div><h3>Error Correction Guarantee</h3><p>If an error occurs in our drawings, we return to the site at no charge to verify measurements and issue corrected plans.</p></div></div>
+          </div>
+        </div>
+        <div class="why-panel">
+          <p class="why-quote">&#8220;Bad measurements cost time, money, and permits. <em>We eliminate that risk.</em>&#8221;</p>
+          <div class="why-stats">
+            <div class="wstat"><div class="wstat-n">2004</div><div class="wstat-l">Year founded, Plano TX</div></div>
+            <div class="wstat"><div class="wstat-n">50+</div><div class="wstat-l">States inc. PR &amp; Canada</div></div>
+            <div class="wstat"><div class="wstat-n">&#177;1/32&#8243;</div><div class="wstat-l">LEICA laser accuracy</div></div>
+            <div class="wstat"><div class="wstat-n">48h</div><div class="wstat-l">Avg. scheduling time</div></div>
+          </div>
+          <div class="why-cta-block">
+            <div><div class="label-s">Ready to get started?</div><div class="phone">972-342-7070</div></div>
+            <a href="tel:9723427070" class="why-cta-btn">Call Now</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TESTIMONIALS -->
+  <section class="section section-bg">
+    <div class="wrap">
+      <div class="sh-c">
+        <span class="eyebrow">Client stories</span>
+        <h2>Trusted by <em>AEC Professionals</em></h2>
+      </div>
+      <div class="testi-grid">
+        <div class="testi-card">
+          <p class="testi-text">We&#8217;ve worked with National As Built on over a dozen commercial renovation projects. Their drawings are always accurate and delivered on time. Our design team trusts them completely.</p>
+          <div class="testi-author"><div class="testi-avatar">MR</div><div><div class="testi-name">M. Rodriguez</div><div class="testi-role">Principal Architect, Dallas TX</div></div></div>
+        </div>
+        <div class="testi-card">
+          <p class="testi-text">We had an urgent permit submission and needed as-built drawings in under a week. National As Built made it happen. The LEICA accuracy saved us from a costly redesign on a tight deadline.</p>
+          <div class="testi-author"><div class="testi-avatar">JT</div><div><div class="testi-name">J. Thompson</div><div class="testi-role">General Contractor, Houston TX</div></div></div>
+        </div>
+        <div class="testi-card">
+          <p class="testi-text">Managing a 30-location retail rollout requires a reliable survey partner. National As Built gives us consistent deliverables across every market nationwide. Highly recommended for portfolio work.</p>
+          <div class="testi-author"><div class="testi-avatar">SK</div><div><div class="testi-name">S. Kim</div><div class="testi-role">Development Manager, Retail Chain</div></div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRICING -->
+  <section class="section" id="pricing">
+    <div class="wrap">
+      <div class="sh-c">
+        <span class="eyebrow">Transparent pricing</span>
+        <h2>Clear Pricing. <em>No Surprises.</em></h2>
+        <p>Typical pricing ranges so you can plan with confidence. Contact us for an exact quote tailored to your project scope.</p>
+      </div>
+      <div class="price-grid">
+        <div class="price-card">
+          <div class="price-tier">Essentials</div>
+          <div class="price-amount">$0.20&ndash;$0.40</div>
+          <div class="price-unit">per sq ft</div>
+          <p class="price-desc">Straightforward spaces and early-stage planning.</p>
+          <ul class="price-features">
+            <li>Field measurement &amp; data capture</li>
+            <li>Floor plans (DWG + PDF)</li>
+            <li>Dropbox delivery</li>
+            <li>Standard turnaround</li>
+          </ul>
+          <a href="#quote" class="price-cta">Request This Package</a>
+        </div>
+        <div class="price-card featured">
+          <div class="price-badge">Most Popular</div>
+          <div class="price-tier">Professional</div>
+          <div class="price-amount">$0.40&ndash;$0.80</div>
+          <div class="price-unit">per sq ft</div>
+          <p class="price-desc">Most commercial and residential renovation projects.</p>
+          <ul class="price-features">
+            <li>Everything in Essentials</li>
+            <li>Reflected ceiling plans</li>
+            <li>Elevations &amp; key sections</li>
+            <li>Detailed annotations</li>
+            <li>Priority production</li>
+          </ul>
+          <a href="#quote" class="price-cta">Request This Package</a>
+        </div>
+        <div class="price-card">
+          <div class="price-tier">Enterprise</div>
+          <div class="price-amount">Custom</div>
+          <div class="price-unit">portfolio pricing</div>
+          <p class="price-desc">Multi-site rollouts and recurring programs.</p>
+          <ul class="price-features">
+            <li>Dedicated project manager</li>
+            <li>Standardized templates</li>
+            <li>Portfolio scheduling</li>
+            <li>Volume discounts</li>
+            <li>Executive reporting</li>
+          </ul>
+          <a href="#quote" class="price-cta">Talk to Our Team</a>
+        </div>
+      </div>
+      <p style="text-align:center;margin-top:26px;font-size:13px;color:var(--text3)">
+        Pricing varies by square footage, complexity, and location.
+        <a href="#quote" style="color:var(--blue2);font-weight:600">Contact us</a> for an exact quote &mdash; we respond within 2 business hours.
+      </p>
+    </div>
+  </section>
+
+  <!-- CALCULATOR -->
+  <section class="section-sm section-bg">
+    <div class="wrap">
+      <div class="sh-c" style="margin-bottom:38px">
+        <span class="eyebrow">Estimate your project</span>
+        <h2>Instant <em>Quote Calculator</em></h2>
+        <p>Adjust the sliders for a ballpark estimate. Submit the form below for a precise quote.</p>
+      </div>
+      <div class="calc-wrap">
+        <div class="calc-head">
+          <h3>Project Cost Estimator</h3>
+          <p>Drag the sliders to estimate your as-built survey cost</p>
+        </div>
+        <div class="calc-body">
+          <div class="calc-controls">
+            <div>
+              <div class="ctrl-label">Square footage</div>
+              <input type="range" id="sqft" min="500" max="50000" step="500" value="5000" oninput="calcUpdate()">
+              <div class="ctrl-val" id="sqft-val">5,000 sq ft</div>
+            </div>
+            <div>
+              <div class="ctrl-label">Rate per sq ft</div>
+              <input type="range" id="rate" min="20" max="80" step="5" value="40" oninput="calcUpdate()">
+              <div class="ctrl-val" id="rate-val">$0.40 / sq ft</div>
+            </div>
+            <div>
+              <div class="ctrl-label">Number of levels</div>
+              <input type="range" id="levels" min="1" max="10" step="1" value="2" oninput="calcUpdate()">
+              <div class="ctrl-val" id="levels-val">2 levels</div>
+            </div>
+          </div>
+          <div class="calc-result">
+            <div><div class="cr-label">Estimated low</div><div class="cr-val" id="calc-low">$3,400</div></div>
+            <div><div class="cr-label">Estimated high</div><div class="cr-val" id="calc-high">$4,600</div></div>
+            <a href="#quote" class="btn btn-navy btn-lg">Get Exact Quote &rarr;</a>
+          </div>
+          <p class="calc-note">Estimates are indicative ranges only. Final pricing depends on project complexity, access, and specific deliverables required.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- COVERAGE + CITIES -->
+  <section class="section" id="coverage">
+    <div class="wrap">
+      <div class="coverage-grid">
+        <div>
+          <span class="eyebrow">Coverage</span>
+          <h2 style="font-family:var(--serif);font-size:clamp(28px,3vw,42px);color:var(--navy);margin-top:10px;margin-bottom:18px">Nationwide Reach, <em style="color:var(--blue)">Local Expertise</em></h2>
+          <p style="font-size:16px;color:var(--text2);line-height:1.7;margin-bottom:26px">Headquartered in Plano, Texas, we deploy field teams across the entire United States, Puerto Rico, and Canada. One flat rate &mdash; anywhere.</p>
+          <div class="cov-tags">
+            <span class="cov-tag">Texas</span><span class="cov-tag">Florida</span><span class="cov-tag">California</span>
+            <span class="cov-tag">New York</span><span class="cov-tag">Illinois</span><span class="cov-tag">Georgia</span>
+            <span class="cov-tag">North Carolina</span><span class="cov-tag">Arizona</span><span class="cov-tag">Colorado</span>
+            <span class="cov-tag">Washington</span><span class="cov-tag">Nevada</span><span class="cov-tag">Tennessee</span>
+            <span class="cov-tag">Ohio</span><span class="cov-tag">Pennsylvania</span><span class="cov-tag">+ 35 more</span>
+          </div>
+          <div class="cov-btns">
+            <a href="#quote" class="btn btn-navy btn-lg">Get a Quote for Your Location</a>
+            <a href="tel:9723427070" class="btn btn-outline btn-lg">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 10.8a19.79 19.79 0 01-3.07-8.67A2 2 0 012.18 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.91 7.91a16 16 0 006.29 6.29l1.28-1.28a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+              Call 972-342-7070
+            </a>
+          </div>
+        </div>
+        <div>
+          <div class="cities-label">Our 10 major markets</div>
+          <div class="cities-grid-list" id="home-cities-grid"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="section section-bg" id="faq">
+    <div class="wrap">
+      <div class="sh-c">
+        <span class="eyebrow">FAQ</span>
+        <h2>Common <em>Questions</em></h2>
+      </div>
+      <div class="faq-list">
+        <details><summary>What exactly is an as-built survey?<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></summary><div class="faq-body">An as-built survey is a precise documentation of a building's existing conditions — walls, doors, windows, columns, ceiling heights, and architectural features — exactly as they stand today. It's essential when original drawings are unavailable, outdated, or inaccurate, and is used for renovation planning, permitting, leasing, and ADA compliance.</div></details>
+        <details><summary>How long does a survey take?<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></summary><div class="faq-body">Most projects are scheduled within 48 hours of your request. The on-site survey takes a few hours to a full day depending on size and complexity. Drafting is completed and deliverables sent via Dropbox within a few business days. We'll give you a specific timeline when you quote.</div></details>
+        <details><summary>What file formats do you deliver?<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></summary><div class="faq-body">Standard deliverables are DWG (AutoCAD) and PDF via Dropbox. We use the latest AutoCAD version. If you need a specific version or additional formats, let us know at quote time and we'll accommodate your team.</div></details>
+        <details><summary>How accurate are your measurements?<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></summary><div class="faq-body">We use professional LEICA laser devices achieving ±1/32" accuracy over 300 feet per manufacturer specifications — far beyond tape measure tolerances. All plans are general references for design and should be verified by licensed professionals for structural or engineering use.</div></details>
+        <details><summary>What if there's an error in my drawings?<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></summary><div class="faq-body">If an error occurs in our drawings, we return to the site at no additional charge to verify measurements and issue corrected plans. We stand behind our work completely.</div></details>
+        <details><summary>Do you handle multi-site rollouts?<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></summary><div class="faq-body">Yes — it's a significant part of our business. We work with retail chains, franchise operators, and portfolio managers on standardized programs with dedicated PM, consistent templates, and coordinated scheduling. Contact us to discuss your rollout.</div></details>
+        <details><summary>What does "one rate anywhere" mean?<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></summary><div class="faq-body">We don't charge extra for remote or out-of-state locations. Travel costs are built into our flat rate — whether your project is in downtown Manhattan or rural Montana, you get the same competitive pricing. No surprises on your invoice.</div></details>
+      </div>
+    </div>
+  </section>
+
+  <!-- FULL QUOTE FORM -->
+  <section class="section section-navy" id="quote">
+    <div class="wrap">
+      <div style="margin-bottom:44px">
+        <span class="eyebrow" style="color:var(--blue3)">Get started</span>
+        <h2 style="color:var(--white);margin-top:10px">Request Your <em>Free Quote</em></h2>
+        <p style="font-size:16px;color:rgba(255,255,255,.5);max-width:520px;line-height:1.7;margin-top:10px">Tell us about your project and we respond within 2 business hours with a clear cost range and next steps.</p>
+      </div>
+      <div class="quote-grid">
+        <div class="quote-form-wrap">
+          <div id="main-success" class="form-success">
+            <div style="width:56px;height:56px;background:var(--blue);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 16px">
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            </div>
+            <h3 style="font-family:var(--serif);font-size:22px;color:var(--navy);margin-bottom:10px">Request Received!</h3>
+            <p style="font-size:15px;color:var(--text2);line-height:1.65;margin-bottom:22px">A member of our team will contact you within 2 business hours.</p>
+            <a href="tel:9723427070" class="btn btn-navy btn-lg" style="justify-content:center">Call 972-342-7070</a>
+          </div>
+          <form id="main-form" onsubmit="submitForm(event,'main')">
+            <input type="text" name="honeypot" style="display:none" tabindex="-1" autocomplete="off">
+            <div class="fg-row">
+              <div class="fg"><label>Full name *</label><input name="name" placeholder="John Smith" required></div>
+              <div class="fg"><label>Company</label><input name="company" placeholder="ABC Architecture"></div>
+            </div>
+            <div class="fg-row">
+              <div class="fg"><label>Email *</label><input type="email" name="email" placeholder="john@company.com" required></div>
+              <div class="fg"><label>Phone</label><input type="tel" name="phone" placeholder="(972) 000-0000"></div>
+            </div>
+            <div class="fg-row">
+              <div class="fg">
+                <label>Project type *</label>
+                <select name="projectType" required>
+                  <option value="">Select a service...</option>
+                  <option>Commercial As-Built Survey</option>
+                  <option>Residential Survey</option>
+                  <option>Scan-to-CAD</option>
+                  <option>Matterport 3D Virtual Tour</option>
+                  <option>Structural Survey</option>
+                  <option>Roof Survey</option>
+                  <option>ADA Survey</option>
+                  <option>Lease Area Verification</option>
+                  <option>Multi-site Rollout</option>
+                  <option>Permit Assistance</option>
+                </select>
+              </div>
+              <div class="fg">
+                <label>Building type</label>
+                <select name="buildingType">
+                  <option>Commercial Office</option>
+                  <option>Retail</option>
+                  <option>Restaurant / Hospitality</option>
+                  <option>Industrial / Warehouse</option>
+                  <option>Healthcare</option>
+                  <option>Education</option>
+                  <option>Residential</option>
+                  <option>Mixed Use</option>
+                  <option>Municipal</option>
+                </select>
+              </div>
+            </div>
+            <div class="fg-row">
+              <div class="fg"><label>Est. square feet</label><input name="sqft" placeholder="e.g. 10,000"></div>
+              <div class="fg"><label>Number of levels</label><input type="number" name="levels" placeholder="e.g. 2" min="1"></div>
+            </div>
+            <div class="fg"><label>Project location *</label><input name="location" placeholder="City, State or full address" required></div>
+            <div class="fg">
+              <label>Timeline</label>
+              <select name="timeline">
+                <option>ASAP — within 1 week</option>
+                <option>Within 2 weeks</option>
+                <option>Within 1 month</option>
+                <option>Planning phase — no rush</option>
+              </select>
+            </div>
+            <div class="fg"><label>Project details &amp; special instructions</label><textarea name="message" rows="4" placeholder="Describe your project, requirements, or anything we should know..." style="resize:vertical"></textarea></div>
+            <div id="main-error" class="form-error"></div>
+            <button type="submit" class="form-submit" id="main-submit">Submit Quote Request &mdash; We Respond in 2 Hours</button>
+            <p class="form-note">Or call us directly: <a href="tel:9723427070">972-342-7070</a></p>
+          </form>
+        </div>
+        <div class="quote-sidebar">
+          <div class="qs-title">What to expect</div>
+          <div class="qs-steps">
+            <div class="qs-step"><div class="qs-step-n">1</div><div><div class="qs-step-t">Quick review</div><div class="qs-step-b">We look at your project type, location, and square footage to confirm scope.</div></div></div>
+            <div class="qs-step"><div class="qs-step-n">2</div><div><div class="qs-step-t">Follow-up call or email</div><div class="qs-step-b">A team member reaches out within 2 hours to discuss pricing and timeline.</div></div></div>
+            <div class="qs-step"><div class="qs-step-n">3</div><div><div class="qs-step-t">Survey scheduled</div><div class="qs-step-b">Once confirmed, we schedule your on-site survey within 48 hours.</div></div></div>
+            <div class="qs-step"><div class="qs-step-n">4</div><div><div class="qs-step-t">Drawings delivered</div><div class="qs-step-b">Clean DWG and PDF files sent via Dropbox, ready to use immediately.</div></div></div>
+          </div>
+          <div class="qs-contact">
+            <div class="qs-contact-label">Prefer to reach us directly?</div>
+            <a href="tel:9723427070"><div class="phone">972-342-7070</div></a>
+            <a href="mailto:info@nationalasbuilt.com"><div class="email">info@nationalasbuilt.com</div></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</div><!-- /page-home -->
+
+<!-- ════════════════════════════════════════════ -->
+<!-- CITY PAGE TEMPLATE (rendered dynamically)   -->
+<!-- ════════════════════════════════════════════ -->
+<div id="page-city" class="page">
+  <div class="city-hero">
+    <div class="wrap" style="position:relative">
+      <nav class="breadcrumb">
+        <a href="#" onclick="showPage('home')">Home</a>
+        <span>/</span><span>Locations</span>
+        <span>/</span><span id="city-bc"></span>
+      </nav>
+      <div class="city-hero-grid">
+        <div>
+          <div class="city-pill" id="city-metro-pill"><span style="width:6px;height:6px;border-radius:50%;background:var(--blue3);display:inline-block;flex-shrink:0"></span><span id="city-metro"></span></div>
+          <h1 class="city-h1" id="city-h1"></h1>
+          <p class="city-sub" id="city-intro"></p>
+          <div class="city-btns">
+            <a href="#city-quote" class="btn btn-blue btn-lg">Get a Free Quote</a>
+            <a href="tel:9723427070" class="btn btn-ghost-white btn-lg">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 10.8a19.79 19.79 0 01-3.07-8.67A2 2 0 012.18 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.91 7.91a16 16 0 006.29 6.29l1.28-1.28a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+              972-342-7070
+            </a>
+          </div>
+        </div>
+        <div class="city-stats-panel">
+          <div class="csp-label">Key areas we serve</div>
+          <div class="csp-tags" id="city-areas"></div>
+          <div class="csp-stats">
+            <div class="csp-stat"><div class="csp-stat-n">48h</div><div class="csp-stat-l">Avg scheduling</div></div>
+            <div class="csp-stat"><div class="csp-stat-n">&#177;1/32&#8243;</div><div class="csp-stat-l">LEICA accuracy</div></div>
+            <div class="csp-stat"><div class="csp-stat-n">DWG+PDF</div><div class="csp-stat-l">Deliverables</div></div>
+            <div class="csp-stat"><div class="csp-stat-n">2004</div><div class="csp-stat-l">Founded</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- City trust bar -->
+  <div id="trust" style="background:var(--bg);border-bottom:1px solid var(--border);padding:16px 0">
+    <div class="wrap">
+      <div class="trust-items">
+        <div class="trust-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Founded 2004 — 20+ years</div>
+        <div class="trust-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>LEICA &#177;1/32&#8243; precision</div>
+        <div class="trust-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>DWG + PDF deliverables</div>
+        <div class="trust-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>All 50 states + PR &amp; Canada</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- City services -->
+  <section class="section">
+    <div class="wrap">
+      <div class="sh">
+        <span class="eyebrow" id="city-svc-eyebrow"></span>
+        <h2>Full Service Coverage in <em id="city-svc-name"></em></h2>
+        <p>Every service available nationwide is fully available in <span id="city-svc-metro"></span>. Same quality. Same flat rate. Same fast turnaround.</p>
+      </div>
+      <div class="services-grid">
+        <div class="svc-card"><div class="svc-num">01</div><h3>Architectural As-Built Surveys</h3><p>Laser-measured floor plans, RCPs, elevations, and site plans aligned to AIA guidelines. DWG and PDF delivery.</p><a href="#city-quote" class="svc-link">Quote now &#8594;</a></div>
+        <div class="svc-card"><div class="svc-num">02</div><h3>Scan-to-CAD</h3><p>LEICA field data converted into clean AutoCAD DWG files ready for design, coordination, or permits.</p><a href="#city-quote" class="svc-link">Quote now &#8594;</a></div>
+        <div class="svc-card"><div class="svc-num">03</div><h3>3D Virtual Tours</h3><p>Matterport dollhouse views, floor plan overlays, and immersive walkthroughs for remote stakeholders.</p><a href="#city-quote" class="svc-link">Quote now &#8594;</a></div>
+        <div class="svc-card"><div class="svc-num">04</div><h3>Structural, Roof &amp; Equipment</h3><p>Discipline-specific surveys for renovation planning, MEP coordination, and facility management.</p><a href="#city-quote" class="svc-link">Quote now &#8594;</a></div>
+        <div class="svc-card"><div class="svc-num">05</div><h3>ADA Surveys</h3><p>Accessible routes, clearances, and facility documentation for compliance reviews and barrier removal.</p><a href="#city-quote" class="svc-link">Quote now &#8594;</a></div>
+        <div class="svc-card"><div class="svc-num">06</div><h3>Lease Area &amp; Permits</h3><p>Precise square footage calculations for leasing, BOMA compliance, and permit applications.</p><a href="#city-quote" class="svc-link">Quote now &#8594;</a></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Why NAB in this city -->
+  <section class="section section-bg">
+    <div class="wrap">
+      <div class="why-city-grid">
+        <div>
+          <span class="eyebrow">Why National As Built</span>
+          <h2 style="font-family:var(--serif);font-size:clamp(26px,3vw,38px);color:var(--navy);margin-top:10px;margin-bottom:16px">The Right Partner for <em style="color:var(--blue)" id="city-why-name"></em></h2>
+          <p style="font-size:15px;color:var(--text2);line-height:1.72;margin-bottom:14px" id="city-why-p1"></p>
+          <p style="font-size:15px;color:var(--text2);line-height:1.72" id="city-why-p2"></p>
+        </div>
+        <div class="why-city-points" id="city-points"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- City quote form -->
+  <section class="section section-navy" id="city-quote">
+    <div class="wrap">
+      <div style="margin-bottom:38px">
+        <span class="eyebrow" style="color:var(--blue3)" id="city-form-eyebrow"></span>
+        <h2 style="color:var(--white);margin-top:10px">Request a Quote for <em id="city-form-name"></em></h2>
+        <p style="font-size:16px;color:rgba(255,255,255,.5);max-width:480px;line-height:1.7;margin-top:10px" id="city-form-sub"></p>
+      </div>
+      <div class="quote-grid">
+        <div class="quote-form-wrap">
+          <div id="city-success" class="form-success">
+            <div style="width:56px;height:56px;background:var(--blue);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 16px"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+            <h3 style="font-family:var(--serif);font-size:22px;color:var(--navy);margin-bottom:10px">Request Received!</h3>
+            <p style="font-size:15px;color:var(--text2);line-height:1.65;margin-bottom:22px">We'll contact you within 2 business hours.</p>
+            <a href="tel:9723427070" class="btn btn-navy btn-lg" style="justify-content:center">Call 972-342-7070</a>
+          </div>
+          <form id="city-form" onsubmit="submitForm(event,'city')">
+            <input type="text" name="honeypot" style="display:none" tabindex="-1" autocomplete="off">
+            <div class="fg-row">
+              <div class="fg"><label>Full name *</label><input name="name" placeholder="John Smith" required></div>
+              <div class="fg"><label>Company</label><input name="company" placeholder="ABC Architecture"></div>
+            </div>
+            <div class="fg-row">
+              <div class="fg"><label>Email *</label><input type="email" name="email" required></div>
+              <div class="fg"><label>Phone</label><input type="tel" name="phone"></div>
+            </div>
+            <div class="fg">
+              <label>Project type *</label>
+              <select name="projectType" required>
+                <option value="">Select a service...</option>
+                <option>Commercial As-Built Survey</option>
+                <option>Residential Survey</option>
+                <option>Scan-to-CAD</option>
+                <option>Matterport 3D Virtual Tour</option>
+                <option>Structural Survey</option>
+                <option>ADA Survey</option>
+                <option>Lease Area Verification</option>
+                <option>Multi-site Rollout</option>
+              </select>
+            </div>
+            <div class="fg-row">
+              <div class="fg"><label>Est. square feet</label><input name="sqft" placeholder="e.g. 10,000"></div>
+              <div class="fg"><label>Levels</label><input type="number" name="levels" placeholder="e.g. 2" min="1"></div>
+            </div>
+            <div class="fg"><label>Project location *</label><input name="location" id="city-location-input" placeholder="City, State" required></div>
+            <div class="fg">
+              <label>Timeline</label>
+              <select name="timeline">
+                <option>ASAP — within 1 week</option>
+                <option>Within 2 weeks</option>
+                <option>Within 1 month</option>
+                <option>Planning phase — no rush</option>
+              </select>
+            </div>
+            <div class="fg"><label>Project details</label><textarea name="message" rows="3" style="resize:vertical"></textarea></div>
+            <div id="city-error" class="form-error"></div>
+            <button type="submit" class="form-submit" id="city-submit">Submit Quote Request</button>
+            <p class="form-note">Or call <a href="tel:9723427070">972-342-7070</a></p>
+          </form>
+        </div>
+        <div class="quote-sidebar">
+          <div class="qs-title">Contact us directly</div>
+          <div class="qs-steps">
+            <div class="qs-step" style="border-bottom:1px solid rgba(255,255,255,.07);padding-bottom:16px;margin-bottom:0">
+              <div style="color:var(--silver2)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 10.8a19.79 19.79 0 01-3.07-8.67A2 2 0 012.18 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.91 7.91a16 16 0 006.29 6.29l1.28-1.28a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg></div>
+              <div><div class="qs-step-t">Call us</div><a href="tel:9723427070" style="font-family:var(--serif);font-size:20px;color:var(--silver2);text-decoration:none">972-342-7070</a></div>
+            </div>
+            <div class="qs-step" style="border-bottom:1px solid rgba(255,255,255,.07);padding-bottom:16px">
+              <div style="color:var(--silver2)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>
+              <div><div class="qs-step-t">Email us</div><a href="mailto:info@nationalasbuilt.com" style="font-size:14px;color:rgba(255,255,255,.5);text-decoration:none">info@nationalasbuilt.com</a></div>
+            </div>
+          </div>
+          <p style="font-size:13px;color:rgba(255,255,255,.38);line-height:1.65;margin-top:20px">Every request is reviewed by a real team member. We respond within 2 business hours with a clear cost range.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Other cities -->
+  <section class="section section-bg">
+    <div class="wrap">
+      <div class="sh">
+        <span class="eyebrow">Other locations</span>
+        <h2>We Also Serve</h2>
+      </div>
+      <div class="other-cities-grid" id="other-cities"></div>
+    </div>
+  </section>
+
+</div><!-- /page-city -->
+
+<!-- ════════════════════════════════════════════ -->
+<!-- FOOTER                                       -->
+<!-- ════════════════════════════════════════════ -->
+<footer>
+  <div class="wrap">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="#" onclick="showPage('home')" class="logo" style="text-decoration:none">
+          <div class="logo-mark f-logo-mark">
+            <svg width="28" height="28" viewBox="0 0 56 56" fill="none"><rect x="9" y="10" width="8" height="36" fill="#2563c4"/><rect x="39" y="10" width="8" height="36" fill="#2563c4"/><path d="M17 10 L39 46 L35 46 L13 10 Z" fill="#c5d0df"/><path d="M17 10 L39 10 L39 20 L25 10 Z" fill="#2563c4" opacity=".6"/><path d="M17 46 L39 46 L39 36 L27 46 Z" fill="#2563c4" opacity=".6"/></svg>
+          </div>
+          <div><div class="logo-text-top f-logo-top">NATIONAL AS BUILT</div><div class="logo-text-bot f-logo-bot">INC. &middot; NATIONWIDE SURVEYS</div></div>
+        </a>
+        <p>Commercial and residential as-built surveys, Scan-to-CAD, Matterport 3D tours, and multi-site rollout programs across all 50 states, Puerto Rico, and Canada. Founded 2004.</p>
+        <a href="tel:9723427070" class="footer-phone">972-342-7070</a>
+        <a href="mailto:info@nationalasbuilt.com" class="footer-email">info@nationalasbuilt.com</a>
+      </div>
+      <div>
+        <h4>Services</h4>
+        <ul class="footer-links">
+          <li><a href="#services" onclick="showPage('home')">As-Built Surveys</a></li>
+          <li><a href="#services" onclick="showPage('home')">Scan-to-CAD</a></li>
+          <li><a href="#services" onclick="showPage('home')">Matterport 3D Tours</a></li>
+          <li><a href="#services" onclick="showPage('home')">Structural Surveys</a></li>
+          <li><a href="#services" onclick="showPage('home')">ADA Surveys</a></li>
+          <li><a href="#services" onclick="showPage('home')">Lease Area Verification</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Locations</h4>
+        <ul class="footer-links" id="footer-cities"></ul>
+      </div>
+      <div>
+        <h4>Get Started</h4>
+        <ul class="footer-links">
+          <li><a href="#quote" onclick="showPage('home')">Request a Quote</a></li>
+          <li><a href="#pricing" onclick="showPage('home')">View Pricing</a></li>
+          <li><a href="#process" onclick="showPage('home')">How It Works</a></li>
+          <li><a href="#faq" onclick="showPage('home')">FAQ</a></li>
+          <li><a href="mailto:hr@nationalasbuilt.com">Surveyor Inquiries</a></li>
+        </ul>
+        <div style="margin-top:24px"><a href="#quote" class="btn btn-blue btn-sm" onclick="showPage('home')" style="width:100%;justify-content:center">Get Free Quote</a></div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; <span id="yr"></span> National As Built Inc. All rights reserved. Plano, Texas.</p>
+      <div class="footer-bottom-links">
+        <a href="mailto:info@nationalasbuilt.com">Contact</a>
+        <a href="#faq" onclick="showPage('home')">FAQ</a>
+        <a href="mailto:hr@nationalasbuilt.com">Careers</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- MOBILE STICKY BAR -->
+<div id="sticky-bar">
+  <a href="tel:9723427070" class="btn btn-ghost-white" style="flex:1;justify-content:center;font-size:14px">Call Now</a>
+  <a href="#quote" class="btn btn-blue" style="flex:1;justify-content:center;font-size:14px" onclick="showPage('home')">Get Quote</a>
+</div>
+
+<!-- ════════════════════════════════════════════ -->
+<!-- JAVASCRIPT                                   -->
+<!-- ════════════════════════════════════════════ -->
+<script>
+// ── DATA ──
+const CITIES = [
+  { slug:"dallas",        name:"Dallas",         state:"TX", metro:"Dallas–Fort Worth",    heroLine:"As-Built Surveys in Dallas, TX",         intro:"From Uptown towers to Deep Ellum renovations, National As Built serves the full DFW market with laser-accurate as-built drawings and fast 48-hour scheduling.",              keyAreas:["Downtown Dallas","Uptown","Deep Ellum","Oak Lawn","Design District","Victory Park"] },
+  { slug:"houston",       name:"Houston",        state:"TX", metro:"Greater Houston",       heroLine:"As-Built Surveys in Houston, TX",         intro:"Houston's energy, medical, and commercial sectors demand precise documentation. We provide fast, accurate surveys across Harris County and the broader metro.",          keyAreas:["Downtown Houston","Medical Center","Midtown","The Woodlands","Sugar Land","Pearland"] },
+  { slug:"new-york-city", name:"New York City",  state:"NY", metro:"New York Metro",        heroLine:"As-Built Surveys in New York City",       intro:"NYC's dense, complex building stock requires the most precise documentation available. We serve Manhattan, Brooklyn, Queens, and the broader tri-state area.",        keyAreas:["Manhattan","Brooklyn","Queens","The Bronx","Jersey City","Hoboken"] },
+  { slug:"los-angeles",   name:"Los Angeles",    state:"CA", metro:"Los Angeles Metro",     heroLine:"As-Built Surveys in Los Angeles, CA",     intro:"From Hollywood studios to Westside commercial corridors, we deliver permit-ready as-built drawings across LA County and greater Southern California.",             keyAreas:["Downtown LA","Hollywood","Culver City","Santa Monica","Burbank","Long Beach"] },
+  { slug:"chicago",       name:"Chicago",        state:"IL", metro:"Chicagoland",           heroLine:"As-Built Surveys in Chicago, IL",         intro:"Chicago's landmark architecture and active construction market demand the highest accuracy. We serve the Loop, neighborhoods, and suburban Cook County.",            keyAreas:["The Loop","River North","Wicker Park","West Loop","South Loop","Evanston"] },
+  { slug:"miami",         name:"Miami",          state:"FL", metro:"Miami–Fort Lauderdale", heroLine:"As-Built Surveys in Miami, FL",           intro:"South Florida's fast-growing commercial and luxury residential sectors need precise documentation. We serve Miami, Broward, and Palm Beach counties.",             keyAreas:["Brickell","Wynwood","Coral Gables","Doral","Fort Lauderdale","Miami Beach"] },
+  { slug:"atlanta",       name:"Atlanta",        state:"GA", metro:"Metro Atlanta",         heroLine:"As-Built Surveys in Atlanta, GA",         intro:"Atlanta's rapid commercial growth and dense renovation pipeline make accurate documentation essential. We cover Fulton, DeKalb, and surrounding counties.",       keyAreas:["Midtown","Buckhead","Downtown Atlanta","Decatur","Sandy Springs","Marietta"] },
+  { slug:"phoenix",       name:"Phoenix",        state:"AZ", metro:"Greater Phoenix",       heroLine:"As-Built Surveys in Phoenix, AZ",         intro:"The Valley of the Sun's explosive commercial growth demands reliable documentation. We deliver fast, accurate surveys across Maricopa County and the metro.",      keyAreas:["Downtown Phoenix","Scottsdale","Tempe","Mesa","Chandler","Glendale"] },
+  { slug:"seattle",       name:"Seattle",        state:"WA", metro:"Greater Seattle",       heroLine:"As-Built Surveys in Seattle, WA",         intro:"Seattle's tech-driven commercial boom and historic building stock create constant demand for precise documentation across King County and Puget Sound.",         keyAreas:["Downtown Seattle","South Lake Union","Capitol Hill","Bellevue","Redmond","Kirkland"] },
+  { slug:"denver",        name:"Denver",         state:"CO", metro:"Denver Metro",          heroLine:"As-Built Surveys in Denver, CO",          intro:"Denver's thriving commercial real estate and renovation market needs accurate, permit-ready documentation. We serve the metro, Boulder, and the Front Range.",    keyAreas:["LoDo","RiNo","Cherry Creek","Aurora","Lakewood","Boulder"] },
+];
+
+// ── PAGE ROUTING ──
+let currentCity = null;
+
+function showPage(page, citySlug) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  if (page === 'city' && citySlug) {
+    currentCity = CITIES.find(c => c.slug === citySlug);
+    if (!currentCity) { showPage('home'); return; }
+    renderCity(currentCity);
+    document.getElementById('page-city').classList.add('active');
+    document.title = currentCity.heroLine + ' | National As Built Inc.';
+  } else {
+    document.getElementById('page-home').classList.add('active');
+    document.title = 'National As Built Inc. — Nationwide As-Built Surveys';
+  }
+  window.scrollTo({top: 0, behavior: 'smooth'});
+  // Reset city form
+  const cf = document.getElementById('city-form');
+  const cs = document.getElementById('city-success');
+  const csub = document.getElementById('city-submit');
+  if (cf) { cf.reset(); cf.style.display = 'block'; }
+  if (cs) cs.classList.remove('show');
+  if (csub) { csub.disabled = false; csub.textContent = 'Submit Quote Request'; }
+}
+
+// ── RENDER CITY ──
+function renderCity(city) {
+  document.getElementById('city-bc').textContent = city.name + ', ' + city.state;
+  document.getElementById('city-metro').textContent = city.metro;
+  document.getElementById('city-h1').textContent = city.heroLine;
+  document.getElementById('city-intro').textContent = city.intro;
+
+  // Key areas tags
+  const areasEl = document.getElementById('city-areas');
+  areasEl.innerHTML = city.keyAreas.map(a => `<span class="csp-tag">${a}</span>`).join('');
+
+  // Services section
+  document.getElementById('city-svc-eyebrow').textContent = 'Services in ' + city.name;
+  document.getElementById('city-svc-name').textContent = city.name + ', ' + city.state;
+  document.getElementById('city-svc-metro').textContent = city.metro;
+
+  // Why section
+  document.getElementById('city-why-name').textContent = city.name + ' Projects';
+  document.getElementById('city-why-p1').textContent = city.name + "'s construction and renovation market demands reliable, accurate documentation. We bring the same LEICA laser precision and AIA-standard deliverables to every " + city.name + " project that we provide nationwide.";
+  document.getElementById('city-why-p2').textContent = "Whether you're an architect renovating in " + city.keyAreas[0] + ", a contractor permitting in " + city.keyAreas[1] + ", or a developer managing multiple " + city.name + " properties, we deliver accurate drawings on your timeline.";
+
+  const pts = [
+    { t: city.name + ' market coverage', b: 'We serve ' + city.keyAreas.join(', ') + ' and the broader ' + city.metro + ' area.' },
+    { t: '48-hour scheduling', b: 'Survey teams scheduled within 48 hours of your request — no waiting on distant crews.' },
+    { t: 'Flat rate — no surprises', b: 'Our nationwide flat rate applies in ' + city.name + '. No travel surcharges, no hidden fees.' },
+    { t: 'Permit-ready deliverables', b: 'DWG and PDF files aligned to AIA standards, ready for ' + city.name + ' permit submissions.' },
+  ];
+  document.getElementById('city-points').innerHTML = pts.map(p => `<div class="wcp"><div class="wcp-dot"></div><div><div class="wcp-t">${p.t}</div><div class="wcp-b">${p.b}</div></div></div>`).join('');
+
+  // Quote form
+  document.getElementById('city-form-eyebrow').textContent = 'Get started in ' + city.name;
+  document.getElementById('city-form-name').textContent = city.name;
+  document.getElementById('city-form-sub').textContent = "Tell us about your " + city.name + " project and we'll respond within 2 business hours with a clear cost range.";
+  document.getElementById('city-location-input').value = city.name + ', ' + city.state;
+
+  // Other cities
+  const others = CITIES.filter(c => c.slug !== city.slug).slice(0, 6);
+  document.getElementById('other-cities').innerHTML = others.map(c => `
+    <a class="city-link" href="#" onclick="showPage('city','${c.slug}');return false">
+      <div><div class="city-link-name">${c.name}, ${c.state}</div><div class="city-link-metro">${c.metro}</div></div>
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--silver)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    </a>`).join('');
+}
+
+// ── BUILD NAV CITIES ──
+function buildNav() {
+  const dd = document.getElementById('dd-cities');
+  const mob = document.getElementById('mob-city-grid');
+  const homeGrid = document.getElementById('home-cities-grid');
+  const footerList = document.getElementById('footer-cities');
+
+  CITIES.forEach(c => {
+    // Desktop dropdown
+    const a = document.createElement('a');
+    a.href = '#'; a.textContent = c.name + ', ' + c.state;
+    a.onclick = (e) => { e.preventDefault(); showPage('city', c.slug); };
+    dd.appendChild(a);
+
+    // Mobile grid
+    const ma = document.createElement('a');
+    ma.href = '#'; ma.textContent = c.name + ', ' + c.state; ma.className = 'mob-city-grid a';
+    ma.style.cssText = 'font-size:14px;color:var(--text2);padding:5px 0;display:block';
+    ma.onclick = (e) => { e.preventDefault(); showPage('city', c.slug); toggleMobile(); };
+    mob.appendChild(ma);
+
+    // Home cities grid
+    const ca = document.createElement('a');
+    ca.href = '#'; ca.className = 'city-link';
+    ca.innerHTML = `<div><div class="city-link-name">${c.name}, ${c.state}</div><div class="city-link-metro">${c.metro}</div></div><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--silver)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>`;
+    ca.onclick = (e) => { e.preventDefault(); showPage('city', c.slug); };
+    homeGrid.appendChild(ca);
+
+    // Footer
+    const li = document.createElement('li');
+    const fa = document.createElement('a');
+    fa.href = '#'; fa.textContent = c.name + ', ' + c.state;
+    fa.onclick = (e) => { e.preventDefault(); showPage('city', c.slug); };
+    li.appendChild(fa); footerList.appendChild(li);
+  });
+}
+
+// ── MOBILE NAV ──
+let mobileOpen = false;
+function toggleMobile() {
+  mobileOpen = !mobileOpen;
+  document.getElementById('mobile-nav').classList.toggle('open', mobileOpen);
+  document.getElementById('burger-icon').innerHTML = mobileOpen
+    ? '<line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>'
+    : '<line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>';
+}
+
+// ── CALCULATOR ──
+function calcUpdate() {
+  const sqft   = parseInt(document.getElementById('sqft').value);
+  const rate   = parseInt(document.getElementById('rate').value);
+  const levels = parseInt(document.getElementById('levels').value);
+
+  document.getElementById('sqft-val').textContent   = sqft.toLocaleString() + ' sq ft';
+  document.getElementById('rate-val').textContent   = '$0.' + rate + ' / sq ft';
+  document.getElementById('levels-val').textContent = levels + (levels === 1 ? ' level' : ' levels');
+
+  const base = sqft * (rate / 100) * levels;
+  document.getElementById('calc-low').textContent  = '$' + Math.round(base * 0.85).toLocaleString();
+  document.getElementById('calc-high').textContent = '$' + Math.round(base * 1.15).toLocaleString();
+}
+
+// ── FORM SUBMISSION ──
+// NOTE: Replace YOUR_FORMSPREE_ID below with your free Formspree endpoint
+// Get one free at formspree.io — takes 30 seconds
+const FORMSPREE = 'https://formspree.io/f/YOUR_FORMSPREE_ID';
+
+async function submitForm(e, formId) {
+  e.preventDefault();
+  const form    = e.target;
+  const btn     = document.getElementById(formId + '-submit');
+  const errEl   = document.getElementById(formId + '-error');
+  const successEl = document.getElementById(formId + '-success');
+
+  // Honeypot
+  if (form.honeypot && form.honeypot.value) { showSuccess(form, btn, successEl); return; }
+
+  btn.disabled = true;
+  btn.textContent = 'Sending...';
+  errEl.classList.remove('show');
+
+  const data = {};
+  new FormData(form).forEach((v, k) => { if (k !== 'honeypot') data[k] = v; });
+  data._source = formId === 'city' ? ('city-' + (currentCity ? currentCity.slug : 'unknown')) : 'homepage';
+
+  try {
+    if (FORMSPREE.includes('YOUR_FORMSPREE_ID')) {
+      // Demo mode — simulate success
+      await new Promise(r => setTimeout(r, 1000));
+      showSuccess(form, btn, successEl);
+      return;
+    }
+    const res = await fetch(FORMSPREE, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify(data),
+    });
+    const json = await res.json();
+    if (!res.ok) throw new Error(json.error || 'Submission failed.');
+    showSuccess(form, btn, successEl);
+  } catch (err) {
+    btn.disabled = false;
+    btn.textContent = formId === 'city' ? 'Submit Quote Request' : 'Submit Quote Request — We Respond in 2 Hours';
+    errEl.textContent = err.message || 'Something went wrong. Please call 972-342-7070.';
+    errEl.classList.add('show');
+  }
+}
+
+function showSuccess(form, btn, successEl) {
+  form.style.display = 'none';
+  successEl.classList.add('show');
+}
+
+// ── SMOOTH SCROLL ──
+document.addEventListener('click', e => {
+  const a = e.target.closest('a[href^="#"]');
+  if (!a) return;
+  const id = a.getAttribute('href').slice(1);
+  if (!id) return;
+  const el = document.getElementById(id);
+  if (el) {
+    e.preventDefault();
+    setTimeout(() => {
+      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 50);
+  }
+});
+
+// ── INIT ──
+document.getElementById('yr').textContent = new Date().getFullYear();
+buildNav();
+calcUpdate();
+</script>
+</body>
+</html>
